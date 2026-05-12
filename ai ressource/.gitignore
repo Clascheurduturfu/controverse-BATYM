@@ -1,0 +1,25 @@
+# Node modules and cache
+node_modules/
+.vite/
+dist/
+build/
+
+# Package files
+package-lock.json
+package.json
+
+# HTML template files
+Auralis Creative Ecosystem Landing Page Template.html
+Auralis Creative Ecosystem Landing Page Template_files/
+
+# OS and IDE
+.DS_Store
+.vs/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local

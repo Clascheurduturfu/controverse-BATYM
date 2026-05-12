@@ -73,48 +73,59 @@ const TiltImage = ({ src, alt, className, caption }: { src: string, alt: string,
   );
 };
 
-// --- Matrix Actor Node ---
-const MatrixNode = ({ x, y, label, detail, color, icon: Icon }: { x: number, y: number, label: string, detail: string, color: string, icon?: any }) => {
+const MatrixNode = ({ x, y, label, detail, color, align = 'bottom' }: { x: number, y: number, label: string, detail: string, color: string, align?: 'top' | 'bottom' | 'left' | 'right' }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      className="absolute"
+      className="absolute flex items-center justify-center z-20 hover:z-50"
       style={{ left: `${x}%`, top: `${y}%`, transform: 'translate(-50%, -50%)' }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative">
+      <div className="relative flex items-center justify-center">
         <motion.div 
-          animate={{ scale: isHovered ? 1.2 : 1 }}
+          animate={{ scale: isHovered ? 1.5 : 1 }}
           className={cn(
-            "w-10 h-10 rounded-full flex items-center justify-center cursor-help transition-shadow",
-            isHovered ? "shadow-[0_0_20px_rgba(255,255,255,0.3)] z-30" : "z-10"
+            "w-5 h-5 rounded-full cursor-help transition-shadow border-2 border-[#05070a]",
+            isHovered ? "shadow-[0_0_20px_rgba(255,255,255,0.5)]" : "shadow-lg"
           )}
           style={{ backgroundColor: color }}
-        >
-          {Icon ? <Icon className="w-5 h-5 text-black" /> : <span className="text-[10px] font-black text-black">{label.substring(0, 3).toUpperCase()}</span>}
-        </motion.div>
+        />
         
+        {/* Label always visible */}
+        <div className={cn(
+          "absolute w-max max-w-[140px] pointer-events-none transition-colors",
+          align === 'bottom' ? "top-full mt-2 text-center left-1/2 -translate-x-1/2" : "",
+          align === 'top' ? "bottom-full mb-2 text-center left-1/2 -translate-x-1/2" : "",
+          align === 'left' ? "right-full mr-3 text-right top-1/2 -translate-y-1/2" : "",
+          align === 'right' ? "left-full ml-3 text-left top-1/2 -translate-y-1/2" : "",
+          isHovered ? "text-white" : "text-white/70"
+        )}>
+          <span className="text-[11px] font-bold leading-tight drop-shadow-md inline-block bg-[#05070a]/50 px-2 py-1 rounded-md backdrop-blur-sm">
+            {label}
+          </span>
+        </div>
+
+        {/* Hover Detail Card */}
         <AnimatePresence>
           {isHovered && (
             <motion.div 
               initial={{ opacity: 0, y: 10, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.9 }}
-              className="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 w-64 glass p-6 rounded-2xl z-40 border border-white/10 shadow-2xl backdrop-blur-2xl"
+              className={cn(
+                "absolute w-56 glass p-5 rounded-2xl z-50 border border-white/10 shadow-2xl backdrop-blur-3xl pointer-events-none",
+                align === 'top' ? "bottom-full mb-8 left-1/2 -translate-x-1/2" : "top-full mt-8 left-1/2 -translate-x-1/2"
+              )}
             >
-              <div className="absolute bottom-[-8px] left-1/2 -translate-x-1/2 w-4 h-4 bg-white/5 border-r border-b border-white/10 rotate-45" />
-              <h5 className="font-display font-black text-white text-lg mb-2 leading-tight">{label}</h5>
-              <p className="text-xs text-white/50 leading-relaxed">{detail}</p>
-              <div className="mt-4 flex items-center gap-2">
-                <div className="h-1 flex-1 bg-white/10 rounded-full overflow-hidden">
-                  <div className="h-full" style={{ width: `${100 - y}%`, backgroundColor: color }} />
-                </div>
-                <span className="text-[8px] font-bold text-white/30 uppercase">Perception</span>
-              </div>
+              <div className={cn(
+                "absolute left-1/2 -translate-x-1/2 w-4 h-4 glass rotate-45",
+                align === 'top' ? "bottom-[-8px] border-r border-b border-white/10" : "top-[-8px] border-l border-t border-white/10"
+              )} />
+              <p className="text-sm text-white/80 leading-relaxed font-medium">{detail}</p>
             </motion.div>
           )}
         </AnimatePresence>
@@ -222,83 +233,85 @@ export default function App() {
       <Navbar />
       
       {/* Hero Section */}
-      <header className="relative h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
+      <header className="relative min-h-screen flex flex-col items-center justify-between px-6 pt-32 pb-12 overflow-hidden">
         <motion.div 
           animate={{ scale: [1, 1.2, 1], x: [0, 40, 0] }}
           transition={{ repeat: Infinity, duration: 15 }}
-          className="absolute top-1/4 -left-40 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[150px]" 
+          className="absolute top-1/4 -left-40 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[150px] pointer-events-none" 
         />
         <motion.div 
           animate={{ scale: [1, 1.3, 1], y: [0, -50, 0] }}
           transition={{ repeat: Infinity, duration: 18 }}
-          className="absolute bottom-1/4 -right-40 w-[600px] h-[600px] bg-accent-purple/5 rounded-full blur-[150px]" 
+          className="absolute bottom-1/4 -right-40 w-[600px] h-[600px] bg-accent-purple/5 rounded-full blur-[150px] pointer-events-none" 
         />
         
-        <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="relative z-10 text-center max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <span className="inline-block px-6 py-2 rounded-full border border-white/10 bg-white/5 text-[11px] font-black tracking-[0.5em] uppercase mb-12 text-accent shadow-[0_0_30px_rgba(0,210,255,0.15)]">
-              Étude de Cartographie des Controverses
-            </span>
+        <div className="flex-grow flex flex-col justify-center w-full relative z-10">
+          <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="text-center max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <span className="inline-block px-6 py-2 rounded-full border border-white/10 bg-white/5 text-[11px] font-black tracking-[0.5em] uppercase mb-12 text-accent shadow-[0_0_30px_rgba(0,210,255,0.15)]">
+                Étude de Cartographie des Controverses
+              </span>
+            </motion.div>
+            
+            <motion.h1 
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, delay: 0.2 }}
+              className="text-7xl md:text-9xl lg:text-[12rem] font-display font-black tracking-tighter leading-[0.8] mb-12 select-none flex flex-col items-center"
+            >
+              <span className="text-gradient block">PARIS</span>
+              <RotatingText
+                texts={['VERTICAL?', 'DENSE?', 'VERTE?', 'DURABLE?']}
+                mainClassName="text-white/20 mt-2"
+                staggerFrom={"last"}
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "-120%" }}
+                staggerDuration={0.05}
+                splitLevelClassName="overflow-hidden pb-4 sm:pb-6 md:pb-8 pr-4"
+                transition={{ type: "spring", damping: 30, stiffness: 200 }}
+                rotationInterval={4000}
+              />
+            </motion.h1>
+            
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1 }}
+              className="text-xl md:text-3xl text-white/30 max-w-4xl mx-auto leading-relaxed mb-16 font-light"
+            >
+              Analyse des enjeux socio-économiques et patrimoniaux des gratte-ciels en périphérie parisienne.
+            </motion.p>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.4 }}
+              className="flex flex-col sm:flex-row gap-6 justify-center"
+            >
+              <a href="#contexte" className="group flex items-center justify-center gap-3 bg-white text-black px-12 py-6 rounded-full font-black text-lg transition-all hover:bg-accent hover:scale-105 active:scale-95 shadow-xl">
+                COMMENCER L'ANALYSE
+                <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+              </a>
+              <a href="#triangle" className="flex items-center justify-center gap-3 px-12 py-6 rounded-full font-black text-lg border border-white/10 hover:bg-white/5 text-white transition-all z-20">
+                FOCUS TRIANGLE
+                <Maximize2 className="w-5 h-5 text-white/40" />
+              </a>
+            </motion.div>
           </motion.div>
-          
-          <motion.h1 
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.2 }}
-            className="text-7xl md:text-9xl lg:text-[12rem] font-display font-black tracking-tighter leading-[0.8] mb-12 select-none flex flex-col items-center"
-          >
-            <span className="text-gradient block">PARIS</span>
-            <RotatingText
-              texts={['VERTICAL?', 'DENSE?', 'VERTE?', 'DURABLE?']}
-              mainClassName="text-white/20 mt-2"
-              staggerFrom={"last"}
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "-120%" }}
-              staggerDuration={0.05}
-              splitLevelClassName="overflow-hidden pb-4 sm:pb-6 md:pb-8 pr-4"
-              transition={{ type: "spring", damping: 30, stiffness: 200 }}
-              rotationInterval={4000}
-            />
-          </motion.h1>
-          
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-            className="text-xl md:text-3xl text-white/30 max-w-4xl mx-auto leading-relaxed mb-16 font-light"
-          >
-            Analyse des enjeux socio-économiques et patrimoniaux des gratte-ciels en périphérie parisienne.
-          </motion.p>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.4 }}
-            className="flex flex-col sm:flex-row gap-6 justify-center"
-          >
-            <a href="#contexte" className="group flex items-center gap-3 bg-white text-black px-12 py-6 rounded-full font-black text-lg transition-all hover:bg-accent hover:scale-105 active:scale-95 shadow-xl">
-              COMMENCER L'ANALYSE
-              <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-            </a>
-            <a href="#triangle" className="flex items-center gap-3 px-12 py-6 rounded-full font-black text-lg border border-white/10 hover:bg-white/5 text-white transition-all z-20">
-              FOCUS TRIANGLE
-              <Maximize2 className="w-5 h-5 text-white/40" />
-            </a>
-          </motion.div>
-        </motion.div>
+        </div>
         
         <motion.div 
           animate={{ y: [0, 15, 0] }}
           transition={{ repeat: Infinity, duration: 2.5 }}
-          className="absolute bottom-6 md:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-10"
+          className="flex flex-col items-center gap-4 z-10 mt-8"
         >
           <span className="text-[10px] font-medium tracking-[0.3em] mr-[-0.3em] text-white/40 uppercase cursor-default select-none">SCROLL TO DISCOVER</span>
-          <div className="w-[1px] h-12 md:h-20 bg-gradient-to-b from-accent/50 to-transparent" />
+          <div className="w-[1px] h-12 md:h-16 bg-gradient-to-b from-accent/50 to-transparent" />
         </motion.div>
       </header>
 
@@ -624,32 +637,36 @@ export default function App() {
 
                   <div className="flex-1 relative ml-16 mb-16 mr-16">
                       {/* Axes */}
-                      <div className="absolute left-0 bottom-0 w-full h-2 bg-gradient-to-r from-white/20 via-white/10 to-transparent rounded-full" />
-                      <div className="absolute left-0 bottom-0 w-2 h-full bg-gradient-to-t from-white/20 via-white/10 to-transparent rounded-full" />
+                      <div className="absolute left-0 top-1/2 w-full h-[2px] bg-gradient-to-r from-white/5 via-white/20 to-white/5 -translate-y-1/2" />
+                      <div className="absolute left-1/2 top-0 w-[2px] h-full bg-gradient-to-b from-white/5 via-white/20 to-white/5 -translate-x-1/2" />
+                      <div className="absolute left-1/2 top-1/2 w-3 h-3 border-2 border-white/30 rounded-full -translate-x-1/2 -translate-y-1/2" />
 
                       {/* Axes Labels */}
-                      <div className="absolute -left-20 top-1/2 -rotate-90 text-[12px] font-black tracking-[0.6em] text-white/10 uppercase whitespace-nowrap">Perception du Projet</div>
-                      <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 text-[12px] font-black tracking-[0.6em] text-white/10 uppercase">Attitude vis-à-vis du projet</div>
+                      <div className="absolute -left-10 top-1/2 -rotate-90 text-[10px] font-black tracking-[0.4em] text-white/30 uppercase whitespace-nowrap -translate-x-1/2 -translate-y-1/2">Perception du Projet</div>
+                      <div className="absolute left-1/2 -bottom-10 text-[10px] font-black tracking-[0.4em] text-white/30 uppercase -translate-x-1/2">Implication dans la controverse</div>
 
                       {/* Values */}
-                      <div className="absolute -bottom-10 left-0 text-[11px] font-black text-white/20 tracking-widest">HOSTILE</div>
-                      <div className="absolute -bottom-10 right-0 text-[11px] font-black text-white/20 tracking-widest">FAVORABLE</div>
-                      <div className="absolute -left-12 bottom-0 text-[11px] font-black text-white/20 rotate-90 origin-bottom-left tracking-widest">NÉGATIVE</div>
-                      <div className="absolute -left-12 top-0 text-[11px] font-black text-white/20 rotate-90 origin-bottom-left tracking-widest">POSITIVE</div>
+                      <div className="absolute top-1/2 left-0 -translate-y-6 text-[10px] font-black text-accent-purple tracking-widest uppercase">Faible</div>
+                      <div className="absolute top-1/2 right-0 -translate-y-6 text-[10px] font-black text-accent tracking-widest uppercase">Élevée</div>
+                      <div className="absolute bottom-0 left-1/2 ml-4 text-[10px] font-black text-accent-purple tracking-widest uppercase">Hostile</div>
+                      <div className="absolute top-0 left-1/2 ml-4 text-[10px] font-black text-accent tracking-widest uppercase">Favorable</div>
 
-                      {/* Actor Nodes from perception du projet.png data */}
-                      <MatrixNode x={90} y={10} label="Mairie de Paris" detail="Acteur majeur, soutien politique indéfectible depuis 2008." color="#00d2ff" />
-                      <MatrixNode x={85} y={5} label="Unibail-Rodamco-Westfield" detail="Propriétaire et financeur. Position ultra-favorable." color="#00d2ff" />
-                      <MatrixNode x={80} y={15} label="Herzog & de Meuron" detail="Architectes concepteurs. Défendent l'innovation technique." color="#00d2ff" />
+                      {/* Actor Nodes mapped exactly from the provided diagram */}
+                      <MatrixNode x={50} y={15} label="Unibail-Rodamco-Westfield" detail="Promoteur du projet, intérêt financier et stratégique majeur." color="#00d2ff" align="bottom" />
+                      <MatrixNode x={75} y={15} label="Cabinet Herzog et de Meuron" detail="Architectes, défendent leur vision esthétique et technique." color="#00d2ff" align="bottom" />
+                      <MatrixNode x={90} y={15} label="Mairie de Paris (Anne Hidalgo)" detail="Soutien politique principal, porte le projet face aux critiques." color="#00d2ff" align="bottom" />
                       
-                      <MatrixNode x={15} y={85} label="Opposition LR/EELV" detail="Hostilité politique frontale, critique du modèle urbain." color="#9d50bb" />
-                      <MatrixNode x={10} y={90} label="Collectif Monts 14" detail="Opposant historique, multiplie les recours juridiques." color="#9d50bb" />
-                      <MatrixNode x={20} y={75} label="Anticor" detail="Plainte pour favoritisme, critique la gestion financière." color="#9d50bb" />
+                      <MatrixNode x={90} y={45} label="Chambre régionale des comptes" detail="Examine la régularité financière, position institutionnelle élevée." color="#ffffff" align="left" />
                       
-                      <MatrixNode x={30} y={60} label="UNESCO" detail="Met en garde contre l'impact visuel mondial." color="#ffffff66" />
-                      <MatrixNode x={50} y={45} label="Tribunal Administratif" detail="Arbitre les litiges. Rôle central mais perception neutre." color="#ffffff66" />
-                      <MatrixNode x={40} y={55} label="Expert Urbanisme" detail="Produisent des rapports techniques parfois contradictoires." color="#ffffff66" />
-                      <MatrixNode x={70} y={25} label="Futur locataire" detail="Perception positive mais attitude attentiste." color="#ffffff66" />
+                      <MatrixNode x={65} y={65} label="Anticor" detail="Association luttant contre la corruption, très impliquée juridiquement." color="#9d50bb" align="top" />
+                      <MatrixNode x={75} y={75} label="Parquet national financier" detail="Mène l'enquête sur les soupçons de favoritisme." color="#ffffff" align="bottom" />
+                      
+                      <MatrixNode x={90} y={80} label="Collectif contre la Tour Triangle" detail="Opposants historiques et hostiles, multiplient les actions." color="#9d50bb" align="left" />
+                      <MatrixNode x={90} y={92} label="Opposition à la mairie (EELV)" detail="Opposition politique, critique l'impact écologique." color="#9d50bb" align="left" />
+                      
+                      <MatrixNode x={35} y={55} label="Experts urbains et architectes" detail="Avis partagés mais souvent critiques sur l'intégration urbaine." color="#ffffff" align="bottom" />
+                      <MatrixNode x={30} y={80} label="UNESCO" detail="Inquiète pour l'impact visuel, mais pouvoir de blocage limité." color="#9d50bb" align="bottom" />
+                      <MatrixNode x={10} y={75} label="Philippe Goujon" detail="Maire du 15e, farouchement opposé mais pouvoir décisionnel limité." color="#9d50bb" align="bottom" />
                   </div>
               </div>
           </div>
