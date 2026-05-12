@@ -14,7 +14,8 @@ import {
   Quote,
   ArrowUpRight,
   Info,
-  Maximize2
+  Maximize2,
+  Building2
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -151,9 +152,12 @@ const Navbar = () => {
       scrolled ? "bg-[#05070a]/80 backdrop-blur-xl border-b border-white/10" : "bg-transparent"
     )}>
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <div className="flex items-center gap-2 group cursor-pointer">
-          <div className="w-8 h-8 bg-accent rounded-sm flex items-center justify-center font-black text-black text-xs group-hover:rotate-90 transition-transform">B</div>
-          <span className="font-display font-black tracking-tighter text-xl text-white group-hover:text-accent transition-colors">BATYM</span>
+        <div className="flex items-center gap-3 group cursor-pointer">
+          <div className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-accent/10 border border-accent/20 group-hover:bg-accent/20 transition-colors overflow-hidden shadow-[0_0_15px_rgba(0,210,255,0.15)]">
+             <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-transparent opacity-50" />
+             <Building2 className="w-5 h-5 text-accent relative z-10 group-hover:scale-110 transition-transform" />
+          </div>
+          <span className="font-display font-black tracking-tighter text-2xl text-white group-hover:text-accent transition-colors">BATYM</span>
         </div>
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/60">
           {['Contexte', 'Triangle', 'Chronologie', 'Acteurs', 'Cartographie', 'Équipe'].map((item) => (
@@ -706,7 +710,10 @@ export default function App() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-accent/5 blur-[150px] rounded-full" />
         <div className="flex flex-col items-center gap-12 relative z-10">
           <div className="flex items-center gap-4 scale-150">
-            <div className="w-10 h-10 bg-accent rounded flex items-center justify-center font-black text-black text-sm">B</div>
+            <div className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-accent/10 border border-accent/20 overflow-hidden shadow-[0_0_15px_rgba(0,210,255,0.15)]">
+              <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-transparent opacity-50" />
+              <Building2 className="w-5 h-5 text-accent relative z-10" />
+            </div>
             <span className="font-display font-black tracking-tighter text-3xl text-white">BATYM</span>
           </div>
           <div className="flex flex-wrap justify-center gap-16 text-[11px] font-black tracking-[0.4em] uppercase text-white/10">
