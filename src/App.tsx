@@ -343,7 +343,7 @@ export default function App() {
                   </div>
                 </div>
                 <p>
-                  Cette controverse oppose deux visions : une <span className="text-white font-bold underline decoration-accent/30 underline-offset-8">métropole mondiale compétitive</span> et une <span className="text-white font-bold underline decoration-accent-purple/30 underline-offset-8">ville-patrimoine horizontale</span>.
+                  Cette controverse oppose deux visions : une <span className="text-white font-bold underline decoration-accent/30 underline-offset-8">métropole mondiale compétitive</span> et une <span className="text-white font-bold underline decoration-accent-purple/30 underline-offset-8">ville au patrimoine incomparable</span>.
                 </p>
               </div>
             </div>
@@ -380,7 +380,7 @@ export default function App() {
             <div className="space-y-10">
               <h3 className="text-5xl font-display font-black text-white leading-tight tracking-tighter">Une pyramide de 180 mètres au cœur des débats</h3>
               <p className="text-2xl text-white/40 font-light leading-relaxed">
-                Portée par <strong className="text-white font-bold">Unibail-Rodamco-Westfield</strong>, la Tour Triangle est le symbole même de cette "manhattanisation". Sa forme pyramidale unique a été conçue pour minimiser les ombres portées, mais elle reste le point de cristallisation de toutes les oppositions.
+                Portée par <strong className="text-white font-bold">Unibail-Rodamco-Westfield</strong>, la Tour Triangle est le symbole même de cette "manhattanisation". Sa forme pyramidale unique a été conçue pour minimiser les ombres, mais elle reste le point de cristallisation de toutes les oppositions.
               </p>
               <div className="grid grid-cols-2 gap-6">
                 <div className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-accent/30 transition-colors group">
@@ -404,7 +404,7 @@ export default function App() {
               <TimelineItem 
                 year="1950-1960" 
                 title="Le Plan d'Urbanisme Directeur" 
-                description="Raymond Lopez et Michel Holley défendent l'implantation de tours en périphérie pour 'ceinturer' le centre historique et éviter de toucher au cœur patrimonial." 
+                description="Raymond Lopez et Michel Holley défendent l'implantation de tours en périphérie pour 'ceinturer' le centre historique et éviter de toucher au cœur du patrimoine." 
                 index={0}
               />
               <TimelineItem 
