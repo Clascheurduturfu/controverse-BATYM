@@ -335,7 +335,7 @@ export default function App() {
                     <Quote className="w-32 h-32 text-white" />
                   </div>
                   <p className="text-3xl font-display font-black text-white italic leading-tight mb-6">
-                    "Faut-il densifier en hauteur la périphérie, la verdir, la couvrir partiellement, ou réduire la place de la voiture sans construire ?"
+                    "Faut-il densifier en hauteur la périphérie, la verdir, la couvrir partiellement, ou réduire les places de voitures ?"
                   </p>
                   <div className="flex items-center gap-3">
                     <div className="h-px w-8 bg-accent" />
