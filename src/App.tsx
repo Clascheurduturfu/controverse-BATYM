@@ -1141,8 +1141,8 @@ export default function App() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-8">
             {[
               { name: "Barnabé Jouanard", bio: "Curieux et en recherche d'amélioration constante.", role: "Analyse" },
-              { name: "Titouan Guerin", bio: "Expert en débats argumentés et dynamiques sociales.", role: "Contenu" },
               { name: "Aurélien Trancart", bio: "Passionné par le contact humain et le travail d'équipe.", role: "Coordination" },
+              { name: "Titouan Guerin", bio: "Expert en débats argumentés et dynamiques sociales.", role: "Contenu" },
               { name: "Yohann Hesbert", bio: "Passionné par les progrès technologiques et les sciences.", role: "Recherche" },
               { name: "Martin Hernandez", bio: "Motivé par l'innovation et les défis complexes.", role: "Design" }
             ].map((member) => (
