@@ -1,30 +1,6 @@
-import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Newspaper, Scale, Globe, BookOpen, FileDown, ArrowUpRight } from 'lucide-react';
 import { ScrollNavigateButton } from '../components/ScrollNavigateButton';
-
-const SectionHeading = ({ children, subtitle }: { children: React.ReactNode, subtitle?: string }) => (
-  <div className="mb-16">
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="flex items-center gap-4 mb-2"
-    >
-      <div className="h-px w-12 bg-accent/50" />
-      <span className="text-accent text-xs font-bold tracking-widest uppercase">{subtitle}</span>
-    </motion.div>
-    <motion.h2
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: 0.1 }}
-      className="text-4xl md:text-5xl lg:text-7xl font-display font-black leading-tight text-white tracking-tighter"
-    >
-      {children}
-    </motion.h2>
-  </div>
-);
 
 interface Source {
   id: string;
@@ -72,15 +48,6 @@ const SOURCES_DATA: Source[] = [
     url: "https://metropolitiques.eu/Les-Parisiens-opposes-a-la-grande-hauteur.html"
   },
   {
-    id: "contrevues-periph",
-    title: "Étude d'impact et flux de circulation sur le boulevard périphérique",
-    publisher: "Contrevues",
-    date: "2023",
-    category: "rapports",
-    description: "Rapport analysant la congestion routière (260 000 véhicules par jour) et l'effet barrière physique du périphérique entre Paris et la petite couronne.",
-    context: "Utilisé pour la section 'Le périphérique comme objet de projet' et l'évaluation du trafic automobile."
-  },
-  {
     id: "unesco-44",
     title: "Rapport des décisions adoptées lors de la 44e session étendue du Comité du patrimoine mondial (page 415)",
     publisher: "UNESCO",
@@ -88,7 +55,7 @@ const SOURCES_DATA: Source[] = [
     category: "rapports",
     description: "Recommandations du comité du patrimoine mondial exprimant son inquiétude face à la rupture d'unité visuelle du paysage parisien causée par la Tour Triangle.",
     context: "Cité pour justifier la position d'opposant institutionnel de l'UNESCO sur le plan de la préservation du patrimoine.",
-    url: "https://whc.unesco.org/document/188824"
+    url: "https://immobilier.lefigaro.fr/article/le-projet-de-la-tour-triangle-passe-mal-aupres-de-l-unesco_3053b12e-4393-11ec-bcd5-4e44c42d570c"
   },
   {
     id: "anticor-favoritisme",
@@ -98,7 +65,7 @@ const SOURCES_DATA: Source[] = [
     category: "rapports",
     description: "Détails de l'action en justice d'Anticor ciblant l'accord passé entre la Mairie de Paris et Unibail-Rodamco-Westfield pour la concession du Parc des Expositions.",
     context: "Utilisé pour expliquer les enjeux de transparence financière et les perquisitions menées à la mairie de Paris.",
-    url: "https://www.anticor.org"
+    url: "https://www.anticor.org/2020/11/30/affaire-de-la-tour-triangle/"
   },
   {
     id: "ta-paris-decision",
@@ -108,17 +75,7 @@ const SOURCES_DATA: Source[] = [
     category: "rapports",
     description: "Arrêtés rejetant les requêtes en annulation déposées par les associations (Monts 14, SOS Paris) et validant la modification simplifiée du PLU.",
     context: "Présenté pour illustrer le rôle d'arbitre légal et neutre joué par le Tribunal Administratif.",
-    url: "http://paris.tribunal-administratif.fr"
-  },
-  {
-    id: "hidalgo-communiques",
-    title: "Dossiers de presse et communiqués de la Ville de Paris",
-    publisher: "Ville de Paris",
-    date: "2014-2021",
-    category: "web",
-    description: "Ensemble des communications officielles défendant le projet comme vecteur d'attractivité économique et d'innovation bioclimatique.",
-    context: "Source pour les arguments politiques des pro-tours (Anne Hidalgo, Jean-Louis Missika).",
-    url: "https://www.paris.fr"
+    url: "https://paris.tribunal-administratif.fr/decisions-de-justice/dernieres-decisions/tour-triangle-le-tribunal-rejette-les-recours-diriges-contre-le-permis-de-construire-et-la-promesse-de-bail-a-construction"
   },
   {
     id: "info-durable-triangle",
@@ -128,7 +85,7 @@ const SOURCES_DATA: Source[] = [
     category: "presse",
     description: "Articles décrivant les débats environnementaux sur le bilan carbone de la construction en béton armé et structure métallique.",
     context: "Utilisé pour documenter l'opposition écologique menée par le groupe EELV au Conseil de Paris.",
-    url: "https://www.linfodurable.fr"
+    url: "https://www.linfodurable.fr/votes-symboliques-du-conseil-de-paris-contre-la-tour-triangle-29641"
   },
   {
     id: "wikipedia-triangle",
@@ -139,6 +96,95 @@ const SOURCES_DATA: Source[] = [
     description: "Synthèse libre documentant la hauteur (180m), le nombre d'étages (42), le coût de construction et les grandes étapes juridiques.",
     context: "Source de recoupement pour la chronologie globale et les caractéristiques physiques de l'édifice.",
     url: "https://fr.wikipedia.org/wiki/Tour_Triangle"
+  },
+  {
+    id: "cairn-twitter-debat",
+    title: "Twitter comme arène de débat public : le cas du Conseil de Paris et des controverses en aménagement",
+    author: "Nicolas Douay, Aurélien Reys",
+    publisher: "L'Information géographique (Cairn.info), vol. 80, n°4",
+    date: "2016",
+    category: "academique",
+    description: "Article analysant l'usage de Twitter comme espace de débat politique autour des projets d'aménagement parisiens, dont la Tour Triangle.",
+    context: "Éclaire la dimension numérique et médiatique de la controverse au sein du Conseil de Paris.",
+    url: "https://shs.cairn.info/article/LIG_804_0076?tab=texte-integral"
+  },
+  {
+    id: "lemonde-tours-duo",
+    title: "Les tours Duo à Paris : des monuments à contretemps",
+    publisher: "Le Monde",
+    date: "2022",
+    category: "presse",
+    description: "Analyse critique des tours Duo livrées à Paris, questionnant la pertinence de la construction en hauteur dans le contexte post-Covid et la comparaison avec la Tour Triangle.",
+    context: "Mise en perspective du débat sur les IGH parisiennes et de leur acceptabilité sociale.",
+    url: "https://www.lemonde.fr/culture/article/2022/09/28/les-tours-duo-a-paris-des-monuments-a-contretemps_6143465_3246.html"
+  },
+  {
+    id: "collectif-enquete-publique",
+    title: "Comment participer à l'enquête publique — Que dire ?",
+    publisher: "Collectif contre la Tour Triangle",
+    date: "2016",
+    category: "web",
+    description: "Guide militant appelant les riverains à contribuer à l'enquête publique pour s'opposer au projet de la Tour Triangle.",
+    context: "Témoigne de la mobilisation citoyenne et des stratégies d'opposition lors des procédures administratives.",
+    url: "https://www.contrelatourtriangle.com/http:/www.contrelatourtriangle.com/comment-participer-a-lenquete-publique-que-dire/"
+  },
+  {
+    id: "dezeen-herzog-triangle",
+    title: "Herzog & de Meuron's Tour Triangle skyscraper in Paris",
+    publisher: "Dezeen",
+    date: "2021",
+    category: "presse",
+    description: "Présentation architecturale internationale du projet par le cabinet Herzog & de Meuron, détaillant la forme triangulaire et les innovations techniques.",
+    context: "Regard international sur le projet et sa réception dans la presse spécialisée en architecture.",
+    url: "https://www.dezeen.com/2021/11/19/herzog-de-meuron-tour-triangle/"
+  },
+  {
+    id: "ouestfrance-report",
+    title: "Tour Triangle à Paris : le maire du XVe demande le report de la construction",
+    publisher: "Ouest-France",
+    category: "presse",
+    description: "Article relatant la demande du maire du 15e arrondissement de reporter la construction de la Tour Triangle de 42 étages.",
+    context: "Illustre l'opposition locale au niveau des élus d'arrondissement directement concernés par le chantier.",
+    url: "https://www.ouest-france.fr/ile-de-france/paris-75000/tour-triangle-a-paris-le-maire-du-xve-demande-le-report-de-la-construction-de-cet-immeuble-de-42-7502430"
+  },
+  {
+    id: "cnn-triangle",
+    title: "Paris Tour Triangle — controversial skyscraper",
+    publisher: "CNN",
+    category: "presse",
+    description: "Couverture internationale de la controverse autour de la Tour Triangle, présentant le débat entre modernisation et préservation du skyline parisien.",
+    context: "Montre la dimension internationale du débat et l'attention médiatique mondiale portée au projet.",
+    url: "https://edition.cnn.com/style/article/paris-tour-triangle-osm"
+  },
+  {
+    id: "metropolitiques-demi-siecle",
+    title: "La tour Triangle au regard d'un demi-siècle de débats sur la grande hauteur à Paris",
+    publisher: "Métropolitiques",
+    category: "academique",
+    description: "Analyse historique de 50 ans de débats sur la construction en hauteur à Paris, de la tour Montparnasse à la Tour Triangle.",
+    context: "Contextualise la controverse dans l'histoire longue du refus parisien de la verticalité depuis les années 1970.",
+    url: "https://metropolitiques.eu/La-tour-Triangle-au-regard-d-un-demi-siecle-de-debats-sur-la-grande-hauteur-a.html"
+  },
+  {
+    id: "mines-controverses-attractivite",
+    title: "Image et attractivité de Paris — La Tour Triangle",
+    publisher: "Controverses, Mines Paris PSL",
+    date: "2015",
+    category: "academique",
+    description: "Étude étudiante analysant comment la Tour Triangle s'inscrit dans les stratégies d'attractivité et d'image de la capitale.",
+    context: "Travail de cartographie de controverses comparable, éclairant les arguments économiques des promoteurs du projet.",
+    url: "https://controverses.minesparis.psl.eu/public/promo15/promo15_G26/www.controverses-minesparistech-8.fr/_groupe26/image-et-attractivite-de-paris/index.html"
+  },
+  {
+    id: "bras-avocats-permis",
+    title: "La Tour Triangle : un permis de construire légal",
+    author: "Hélène Bras",
+    publisher: "Cabinet Bras Avocats",
+    date: "2019",
+    category: "rapports",
+    description: "Analyse juridique détaillant la légalité du permis de construire de la Tour Triangle face aux recours déposés par les associations.",
+    context: "Apporte un éclairage juridique indépendant sur la solidité des décisions administratives validant le projet.",
+    url: "https://www.bras-avocats.fr/la-tour-triangle-un-permis-de-construire-legal"
   }
 ];
 
@@ -146,10 +192,19 @@ export const Sources = ({ onNavigate }: { onNavigate: (route: string) => void })
   return (
     <main className="max-w-7xl mx-auto px-6 py-24 pb-40">
       <section>
-        <SectionHeading subtitle="Bibliographie">Sources de l'Étude</SectionHeading>
-        <p className="text-white/40 text-lg md:text-xl font-light mb-12 max-w-3xl leading-relaxed">
-          Consultez les documents officiels, rapports d'urbanisme, études d'opinion publique et publications médiatiques qui ont servi de fondement scientifique à notre cartographie des controverses.
-        </p>
+        <div className="text-center mb-16">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="text-5xl md:text-7xl lg:text-8xl font-display font-black tracking-tighter text-white leading-[0.9]"
+          >
+            Sources de{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-cyan-300 to-blue-500">
+              l'Étude
+            </span>
+          </motion.h1>
+        </div>
 
         {/* PDF Highlight Card */}
         <motion.div
