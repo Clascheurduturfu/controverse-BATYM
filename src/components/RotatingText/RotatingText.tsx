@@ -1,31 +1,14 @@
-import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
-import { motion, AnimatePresence, Transition } from 'framer-motion';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
+import {
+  motion,
+  AnimatePresence,
+  Transition,
+} from 'framer-motion';
 
 import './RotatingText.css';
 
-function cn(...classes: (string | undefined | boolean)[]) {
+function cn(...classes: (string | undefined | null | boolean)[]): string {
   return classes.filter(Boolean).join(' ');
-}
-
-export interface RotatingTextProps {
-  texts: string[];
-  rotationInterval?: number;
-  initial?: any;
-  animate?: any;
-  exit?: any;
-  animatePresenceMode?: 'wait' | 'popLayout' | 'sync';
-  animatePresenceInitial?: boolean;
-  staggerDuration?: number;
-  staggerFrom?: 'first' | 'last' | 'center' | 'random' | number;
-  transition?: Transition;
-  loop?: boolean;
-  auto?: boolean;
-  splitBy?: 'characters' | 'words' | 'lines' | string;
-  onNext?: (index: number) => void;
-  mainClassName?: string;
-  splitLevelClassName?: string;
-  elementLevelClassName?: string;
-  [key: string]: any;
 }
 
 export interface RotatingTextRef {
@@ -33,6 +16,30 @@ export interface RotatingTextRef {
   previous: () => void;
   jumpTo: (index: number) => void;
   reset: () => void;
+}
+
+export interface RotatingTextProps
+  extends Omit<
+    React.ComponentPropsWithoutRef<typeof motion.span>,
+    'children' | 'transition' | 'initial' | 'animate' | 'exit'
+  > {
+  texts: string[];
+  transition?: Transition;
+  initial?: any;
+  animate?: any;
+  exit?: any;
+  animatePresenceMode?: 'sync' | 'wait';
+  animatePresenceInitial?: boolean;
+  rotationInterval?: number;
+  staggerDuration?: number;
+  staggerFrom?: 'first' | 'last' | 'center' | 'random' | number;
+  loop?: boolean;
+  auto?: boolean;
+  splitBy?: string;
+  onNext?: (index: number) => void;
+  mainClassName?: string;
+  splitLevelClassName?: string;
+  elementLevelClassName?: string;
 }
 
 const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>((props, ref) => {
@@ -57,9 +64,9 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>((props, ref)
     ...rest
   } = props;
 
-  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  const [currentTextIndex, setCurrentTextIndex] = useState<number>(0);
 
-  const splitIntoCharacters = (text: string) => {
+  const splitIntoCharacters = (text: string): string[] => {
     if (typeof Intl !== 'undefined' && (Intl as any).Segmenter) {
       const segmenter = new (Intl as any).Segmenter('en', { granularity: 'grapheme' });
       return Array.from(segmenter.segment(text), (segment: any) => segment.segment);
@@ -68,7 +75,7 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>((props, ref)
   };
 
   const elements = useMemo(() => {
-    const currentText = texts[currentTextIndex];
+    const currentText: string = texts[currentTextIndex];
     if (splitBy === 'characters') {
       const words = currentText.split(' ');
       return words.map((word, i) => ({
@@ -96,7 +103,7 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>((props, ref)
   }, [texts, currentTextIndex, splitBy]);
 
   const getStaggerDelay = useCallback(
-    (index: number, totalChars: number) => {
+    (index: number, totalChars: number): number => {
       const total = totalChars;
       if (staggerFrom === 'first') return index * staggerDuration;
       if (staggerFrom === 'last') return (total - 1 - index) * staggerDuration;
@@ -171,7 +178,7 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>((props, ref)
   return (
     <motion.span className={cn('text-rotate', mainClassName)} {...rest} layout transition={transition}>
       <span className="text-rotate-sr-only">{texts[currentTextIndex]}</span>
-      <AnimatePresence mode={animatePresenceMode} initial={animatePresenceInitial}>
+      <AnimatePresence mode={animatePresenceMode as any} initial={animatePresenceInitial}>
         <motion.span
           key={currentTextIndex}
           className={cn(splitBy === 'lines' ? 'text-rotate-lines' : 'text-rotate')}
